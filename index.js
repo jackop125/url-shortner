@@ -1,30 +1,26 @@
-const express = require('express');
+const express = require("express");
+const path = require("path")
+const connectDB = require("./dbConnect");
+const {handleRedirectReq} = require('./controller/handlers')
+const shortURL = require("./model/shortnerModel");
+const customRoute = require("./routes/routes");
+const staticRoute = require("./routes/staticHome");
 const app = express();
-const connectDB = require('./dbConnect');
-const shortURL = require('./model/shortnerModel')
-const customRoute = require('./routes/routes')
-const PORT = 8000
+const PORT = 8000;
 connectDB();
+app.set("view engine", "ejs");
+app.set("views",path.resolve('./view'))
 app.use(express.json());
-app.use('/url',customRoute);
-app.get("/:shortId", async (req, res) => {
-    const id = req.params.shortId;
-    
-    try {
-        const result = await shortURL.findOne({ shortnerID: id });
-        
-        if (!result) {
-            // Handle the case where no matching short ID is found
-            return res.status(404).json({ msg: "Short URL not found" });
-        }
-       const  Redirecturl = result.redirectURL;
-        res.redirect(Redirecturl)
-    } catch (error) {
-        // Handle server errors
-        console.error(error);
-        res.status(500).json({ msg: "Server error" });
-    }
-});
-app.listen(PORT,()=>{
-    console.log(`SERVER STARTED ON ${PORT}`);
+app.use(express.urlencoded({extended:false}))
+app.use("/signup",staticRoute)
+app.use("/url", customRoute);
+app.get("url/:shortId",handleRedirectReq);
+app.get('/',async (req,res)=>{
+  const urls = await shortURL.find({});
+  res.render('home',{
+    urls:urls
+  })
 })
+app.listen(PORT, () => {
+  console.log(`SERVER STARTED ON ${PORT}`);
+});
