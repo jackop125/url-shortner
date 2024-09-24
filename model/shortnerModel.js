@@ -7,6 +7,10 @@ const shortnerSchema = new mongoose.Schema({
     redirectURL:{
         type:String,
         required:true,
+    },
+    createdBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"users"
     }
 },{timestamps:true});
 

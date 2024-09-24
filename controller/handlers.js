@@ -9,8 +9,9 @@ async function handleGenerateNewURL(req, res) {
     const result = await shortURL.create({
       shortnerID: ids,
       redirectURL: req.body.url,
+      createdBy:req.user.id
     });
-    const urls = await shortURL.find({});
+    const urls = await shortURL.find({createdBy:req.user.id});
     return res.status(201).render("home",{genURL:result.shortnerID,urls:urls});
   } catch (err) {
     console.log("ERROR:\n", err);
@@ -20,7 +21,7 @@ async function handleGenerateNewURL(req, res) {
 
 async function handleGetReq(req, res) {
   try {
-    const urls = await shortURL.find({});
+    const urls = await shortURL.find({createdBy:req.user.id});
     if (!urls) {
       return res.end("Server Error");
     }

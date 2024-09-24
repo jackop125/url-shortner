@@ -29,3 +29,51 @@
     </ul>
 </body>
 </html>
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Hello Home Page</h1>
+
+    <form id="urlForm">
+        <label>Enter URL:</label>
+        <input type="text" name="url" placeholder="https://www.example.com"/>
+        <button type="submit">Generate</button>
+    </form>
+
+    <% if(locals.genURL){ %>
+        <p>GenerateID: <%= genURL %> </p>
+    <% } %>
+    <ul>
+        <% urls.map(key => { %>
+            <li><%= key.shortnerID %> URL: <%= key.redirectURL %></li>
+        <% }) %>
+    </ul>
+
+    <script>
+        document.getElementById('urlForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const url = event.target.url.value;
+
+            fetch('/url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data
+                console.log(data);
+                // Optionally, update the page with the new data
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html> -->
